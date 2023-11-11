@@ -1,0 +1,15 @@
+include: package:very_good_analysis/analysis_options.yaml
+linter:
+  rules:
+    public_member_api_docs: false
+
+analyzer:
+  exclude:
+    - lib/l10n/generated/**
+    - test/**
+    - lib/src/**.g.dart
+  errors:
+    invalid_annotation_target: ignore
+    sort_pub_dependencies: ignore
+  plugins:
+    - custom_lint
