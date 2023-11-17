@@ -13,6 +13,7 @@ class TmdbRepository {
     int page = 1,
     String? query,
   }) async {
+    await Future<void>.delayed(const Duration(seconds: 12));
     final results = await dio.get<Map<String, dynamic>>(
       'trending/movie/day?language=en-US&page=$page${query != null ? '&$query' : ''}',
     );
@@ -32,9 +33,11 @@ class TmdbRepository {
     int page = 1,
     String? query = '',
   }) async {
+    await Future<void>.delayed(const Duration(seconds: 12));
     final results = await dio.get<Map<String, dynamic>>(
       'search/movie?query=$query&include_adult=false&page=$page',
     );
+    await Future.delayed(const Duration(seconds: 1), () {});
     return PaginatedResponse.fromJson(
       results.data!,
       dataMapper: TmdbMovie.fromJson,

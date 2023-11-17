@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'tmdb_repository_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 TmdbRepository tmdbRepository(
   TmdbRepositoryRef ref,
 ) {

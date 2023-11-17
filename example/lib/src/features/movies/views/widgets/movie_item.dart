@@ -67,12 +67,12 @@ class MovieItem extends StatelessWidget {
                             height: 6,
                             width: 50,
                             child: LinearProgressIndicator(
-                              value: movie.voteAverage! / 10,
+                              value: movie.voteAverage ?? 0 / 10,
                               backgroundColor: Colors.black38,
                             ),
                           ),
                           Text(
-                            '${(movie.voteAverage! * 10).floor()}%',
+                            '${(movie.voteAverage ?? 0 * 10).floor()}%',
                             style: infoTextStyle,
                           ),
                         ],

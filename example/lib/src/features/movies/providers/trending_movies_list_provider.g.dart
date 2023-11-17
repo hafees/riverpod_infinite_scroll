@@ -7,7 +7,7 @@ part of 'trending_movies_list_provider.dart';
 // **************************************************************************
 
 String _$trendingMoviesListHash() =>
-    r'2ed2663049826d81fd6f788ed422e5afecc1ebe1';
+    r'1d61bb99aeac5ae58e65b71d7a71ccbec06fef4e';
 
 /// See also [TrendingMoviesList].
 @ProviderFor(TrendingMoviesList)

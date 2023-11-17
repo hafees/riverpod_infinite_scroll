@@ -43,6 +43,7 @@ dependencies:
   riverpod_infinite_scroll:
     path: ../
   envied: ^0.5.1
+  skeletonizer: ^0.8.0
 
 dev_dependencies:
   flutter_test:

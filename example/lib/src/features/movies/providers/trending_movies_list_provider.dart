@@ -11,30 +11,10 @@ class TrendingMoviesList extends _$TrendingMoviesList
     implements PaginatedNotifier<TmdbMovie> {
   @override
   FutureOr<List<TmdbMovie>> build() async {
-    state = const AsyncLoading();
-    paginatedDataFetcher = ref.watch(tmdbRepositoryProvider).getTrendingMovies;
-    return await getData();
+    return init(
+      dataFetcher: PaginatedDataRepository(
+        fetcher: ref.watch(tmdbRepositoryProvider).getTrendingMovies,
+      ),
+    );
   }
-
-  @override
-  Future<void> getNextPage() async {
-    state = const AsyncLoading();
-    state = AsyncData(await getData());
-  }
-
-  // @override
-  // Future<void> refresh() async {
-  //   resetPagination();
-  //   ref.invalidateSelf();
-  //   await future;
-  // }
-
-  // @override
-  // Future<void> setQueryFilter(String query) async {
-  //   if (queryFilter != query) {
-  //     queryFilter = query;
-  //     state = const AsyncLoading();
-  //     await refresh();
-  //   }
-  // }
 }

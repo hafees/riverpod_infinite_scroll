@@ -17,7 +17,6 @@ class MovieList extends ConsumerWidget {
         state: movies,
         itemBuilder: (data) => MovieItem(movie: data),
         notifier: ref.read(trendingMoviesListProvider.notifier),
-        pullToRefresh: true,
       ),
     );
   }

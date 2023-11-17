@@ -6,9 +6,9 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 
-///Mixin for default AsyncNotifiers (`AutoDisposeAsyncNotifier`)
-///(Providers created with `@riverpod`)
-mixin PaginatedDataMixin<T> on AutoDisposeAsyncNotifier<List<T>>
+///Mixin for KeepAlive Providers
+///(Providers created with @Riverpod(keepAlive:true))
+mixin KeepAlivePaginatedDataMixin<T> on AsyncNotifier<List<T>>
     implements PaginatedNotifier<T> {
   String? queryFilter;
   late PaginatedDataRepository<T>? _dataFetcher;
@@ -58,7 +58,7 @@ mixin PaginatedDataMixin<T> on AutoDisposeAsyncNotifier<List<T>>
 
   @override
 
-  ///Gets already available data.
+  ///Gets already avaliable data.
   /// Overrides form `PaginatedNotifier` interface
   ///
   /// You may override this in your notifiers

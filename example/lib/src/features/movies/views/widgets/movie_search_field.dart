@@ -16,6 +16,7 @@ class _MovieSearchFieldState extends ConsumerState<MovieSearchField> {
     return TextField(
       onChanged: (value) => searchQuery = value,
       onSubmitted: (value) => _onSubmit(),
+      textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         suffixIcon: IconButton(
           icon: const Icon(Icons.search),

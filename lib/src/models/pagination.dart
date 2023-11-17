@@ -4,11 +4,21 @@ part 'pagination.freezed.dart';
 part 'pagination.g.dart';
 
 @freezed
+
+/// A simple class to store pagination data
+/// Used in `PaginatedResponse` class
 class Pagination with _$Pagination {
   factory Pagination({
+    /// total number of records
     @JsonKey(name: 'total_number') @Default(0) int totalNumber,
+
+    /// records per page
     @JsonKey(name: 'per_page') @Default(10) int perPage,
+
+    /// the currently requested page
     @JsonKey(name: 'current_page') @Default(1) int currentPage,
+
+    /// number of total pages
     @JsonKey(name: 'last_page') @Default(1) int lastPage,
   }) = _Pagination;
 

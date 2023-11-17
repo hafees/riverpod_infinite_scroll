@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+///A mixin to track the scroll position of a ScrollController in Scroll views
+///If the threshold is reached, a fetch next page request can be fired.
+///
 mixin PaginatedScrollController<T extends StatefulWidget> on State<T> {
-  static int scrollDelta = 200;
+  static double scrollDelta = 200;
   ScrollController scrollController = ScrollController();
-
+  bool scrollControllerAutoDispose = true;
   FutureOr<void> onNextPage();
 
   @override
@@ -16,7 +19,9 @@ mixin PaginatedScrollController<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    scrollController.dispose();
+    if (scrollControllerAutoDispose) {
+      scrollController.dispose();
+    }
     super.dispose();
   }
 

@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_infinite_scroll/src/extensions/widget.dart';
 import 'package:riverpod_infinite_scroll/src/paginated_grid_view.dart';
 import 'package:riverpod_infinite_scroll/src/widgets/generic_error.dart';
 import 'package:riverpod_infinite_scroll/src/widgets/loading_indicator.dart';
 import 'package:riverpod_infinite_scroll/src/widgets/no_items_found.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
+@internal
+
+///To be used in GridView
 mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
   List<Widget> get skeletons =>
       List.generate(widget.numSkeletons, (_) => widget.skeleton!);
@@ -18,7 +22,8 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
 
   Widget get statusRow => widget.state.maybeWhen(
         loading: () {
-          return widget.loadingBuilder?.call() ??
+          return widget.loadingBuilder
+                  ?.call(widget.notifier.getPaginationData()) ??
               LoadingIndicator.small.centered.withPaddingAll(10);
         },
         error: (error, stackTrace) =>
@@ -32,7 +37,7 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
       ).centered;
 
   Widget withRefreshIndicator(Widget child) {
-    return widget.pullToRefresh
+    return widget.pullToRefresh && !widget.useSliverGrid
         ? child.withRefreshIndicator(
             onRefresh: () async {
               await widget.notifier.refresh();
@@ -56,20 +61,26 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
   }
 
   Widget get loadingBuilder {
-    return widget.loadingBuilder?.call() ?? loadingIndicator;
+    return widget.loadingBuilder?.call(widget.notifier.getPaginationData()) ??
+        loadingIndicator;
   }
 
   Widget buildShimmer() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey.shade400,
-      highlightColor: Colors.grey.shade200,
-      child: widget.useSliverGrid
-          ? SliverList.list(children: skeletons)
-          : ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: skeletons,
+    return widget.useSliverGrid
+        ? Skeletonizer.sliver(
+            child: SliverGrid.builder(
+              gridDelegate: widget.gridDelegate,
+              itemCount: widget.numSkeletons,
+              itemBuilder: (_, __) => widget.skeleton,
             ),
-    );
+          )
+        : Skeletonizer(
+            child: GridView.builder(
+              gridDelegate: widget.gridDelegate,
+              itemCount: widget.numSkeletons,
+              itemBuilder: (_, __) => widget.skeleton,
+            ),
+          );
   }
 
   Widget itemBuilder(
