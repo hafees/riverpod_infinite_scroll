@@ -12,9 +12,6 @@ class Pagination with _$Pagination {
     /// total number of records
     @JsonKey(name: 'total_number') @Default(0) int totalNumber,
 
-    /// records per page
-    @JsonKey(name: 'per_page') @Default(10) int perPage,
-
     /// the currently requested page
     @JsonKey(name: 'current_page') @Default(1) int currentPage,
 

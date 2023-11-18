@@ -37,7 +37,7 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
       ).centered;
 
   Widget withRefreshIndicator(Widget child) {
-    return widget.pullToRefresh && !widget.useSliverGrid
+    return widget.pullToRefresh && !widget.useSliver
         ? child.withRefreshIndicator(
             onRefresh: () async {
               await widget.notifier.refresh();
@@ -52,12 +52,12 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
           ' Please try later',
       onRetry: widget.notifier.refresh,
     );
-    return widget.useSliverGrid ? errorWidget.sliverToBoxAdapter : errorWidget;
+    return widget.useSliver ? errorWidget.sliverToBoxAdapter : errorWidget;
   }
 
   Widget get loadingIndicator {
     final loading = const LoadingIndicator().centered;
-    return widget.useSliverGrid ? loading.sliverToBoxAdapter : loading;
+    return widget.useSliver ? loading.sliverToBoxAdapter : loading;
   }
 
   Widget get loadingBuilder {
@@ -66,7 +66,7 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
   }
 
   Widget buildShimmer() {
-    return widget.useSliverGrid
+    return widget.useSliver
         ? Skeletonizer.sliver(
             child: SliverGrid.builder(
               gridDelegate: widget.gridDelegate,

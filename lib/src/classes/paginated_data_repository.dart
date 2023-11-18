@@ -1,39 +1,39 @@
 import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:riverpod_infinite_scroll/src/types/types.dart';
 
-/// # Queries and stores paginated data
-/// Can store data successively and returns full set of data when required.
-/// Automatically manages pagination of requests.
-///
-/// **Example**
-/// ```dart
-/// PaginatedDataRepository(
-///   fetcher: ref.watch(tmdbRepositoryProvider).getTrendingMovies,
-/// )
-///
-/// ```
-/// **Example without a separate repository**
-/// ```dart
-/// PaginatedDataRepository(
-///   fetcher: ({int page = 1, String? query}) async {
-///     final results = await dio.get<Map<String, dynamic>>(
-///       'search/movie?query=$query&include_adult=false&page=$page',
-///     );
-///     return PaginatedResponse.fromJson(
-///       results.data!,
-///       dataMapper: TmdbMovie.fromJson,
-///       dataField: 'results',
-///       paginationParser: (data) => Pagination(
-///         totalNumber: data['total_results'] as int,
-///         currentPage: data['page'] as int,
-///         lastPage: data['total_pages'] as int,
-///       ),
-///     );
-///   },
-/// );
-///
-/// ```
 class PaginatedDataRepository<T> {
+  /// ## Queries and stores paginated data
+  /// Can store data successively and returns full set of data when required.
+  /// Automatically manages pagination of requests.
+  ///
+  /// **Example**
+  /// ```dart
+  /// PaginatedDataRepository(
+  ///   fetcher: ref.watch(tmdbRepositoryProvider).getTrendingMovies,
+  /// )
+  ///
+  /// ```
+  /// **Example without a separate repository**
+  /// ```dart
+  /// PaginatedDataRepository(
+  ///   fetcher: ({int page = 1, String? query}) async {
+  ///     final results = await dio.get<Map<String, dynamic>>(
+  ///       'search/movie?query=$query&include_adult=false&page=$page',
+  ///     );
+  ///     return PaginatedResponse.fromJson(
+  ///       results.data!,
+  ///       dataMapper: TmdbMovie.fromJson,
+  ///       dataField: 'results',
+  ///       paginationParser: (data) => Pagination(
+  ///         totalNumber: data['total_results'] as int,
+  ///         currentPage: data['page'] as int,
+  ///         lastPage: data['total_pages'] as int,
+  ///       ),
+  ///     );
+  ///   },
+  /// );
+  ///
+  /// ```
   PaginatedDataRepository({
     required this.fetcher,
     this.queryFilter,

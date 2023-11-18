@@ -37,7 +37,7 @@ mixin PaginatedListMixin<T> on State<PaginatedListView<T>> {
       ).centered;
 
   Widget withRefreshIndicator(Widget child) {
-    return widget.pullToRefresh && !widget.useSliverList
+    return widget.pullToRefresh && !widget.useSliver
         ? child.withRefreshIndicator(
             onRefresh: () async {
               await widget.notifier.refresh();
@@ -52,14 +52,14 @@ mixin PaginatedListMixin<T> on State<PaginatedListView<T>> {
           ' Please try later',
       onRetry: widget.notifier.refresh,
     );
-    return widget.useSliverList
+    return widget.useSliver
         ? const SliverToBoxAdapter(child: Text('test'))
         : errorWidget;
   }
 
   Widget get loadingIndicator {
     final loading = const LoadingIndicator().centered;
-    return widget.useSliverList ? loading.sliverToBoxAdapter : loading;
+    return widget.useSliver ? loading.sliverToBoxAdapter : loading;
   }
 
   Widget get loadingBuilder {
@@ -68,7 +68,7 @@ mixin PaginatedListMixin<T> on State<PaginatedListView<T>> {
   }
 
   Widget buildShimmer() {
-    return widget.useSliverList
+    return widget.useSliver
         ? Skeletonizer.sliver(
             child: SliverList.list(children: skeletons),
           )

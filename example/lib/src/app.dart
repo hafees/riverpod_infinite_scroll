@@ -1,5 +1,5 @@
 import 'package:example/src/constants/colors.dart';
-import 'package:example/src/features/movies/views/movie_search.dart';
+import 'package:example/src/features/movies/views/movie_list_sliver.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -11,10 +11,11 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'TMDB Demo App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: tertiaryColor),
+        colorScheme: ColorScheme.fromSeed(seedColor: secondaryColor),
         useMaterial3: true,
       ),
-      home: const MovieSearchList(),
+      home: MovieListSliver(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

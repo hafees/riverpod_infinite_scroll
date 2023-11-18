@@ -20,12 +20,19 @@ Pagination _$PaginationFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Pagination {
+  /// total number of records
   @JsonKey(name: 'total_number')
   int get totalNumber => throw _privateConstructorUsedError;
+
+  /// records per page
   @JsonKey(name: 'per_page')
   int get perPage => throw _privateConstructorUsedError;
+
+  /// the currently requested page
   @JsonKey(name: 'current_page')
   int get currentPage => throw _privateConstructorUsedError;
+
+  /// number of total pages
   @JsonKey(name: 'last_page')
   int get lastPage => throw _privateConstructorUsedError;
 
@@ -151,15 +158,22 @@ class _$PaginationImpl implements _Pagination {
   factory _$PaginationImpl.fromJson(Map<String, dynamic> json) =>
       _$$PaginationImplFromJson(json);
 
+  /// total number of records
   @override
   @JsonKey(name: 'total_number')
   final int totalNumber;
+
+  /// records per page
   @override
   @JsonKey(name: 'per_page')
   final int perPage;
+
+  /// the currently requested page
   @override
   @JsonKey(name: 'current_page')
   final int currentPage;
+
+  /// number of total pages
   @override
   @JsonKey(name: 'last_page')
   final int lastPage;
@@ -213,15 +227,23 @@ abstract class _Pagination implements Pagination {
       _$PaginationImpl.fromJson;
 
   @override
+
+  /// total number of records
   @JsonKey(name: 'total_number')
   int get totalNumber;
   @override
+
+  /// records per page
   @JsonKey(name: 'per_page')
   int get perPage;
   @override
+
+  /// the currently requested page
   @JsonKey(name: 'current_page')
   int get currentPage;
   @override
+
+  /// number of total pages
   @JsonKey(name: 'last_page')
   int get lastPage;
   @override

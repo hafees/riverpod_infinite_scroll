@@ -23,7 +23,7 @@ final dummyDataRepositoryProvider =
 );
 
 typedef DummyDataRepositoryRef = AutoDisposeProviderRef<DummyDataRepository>;
-String _$dummyDataHash() => r'2abec4b0536b28742ce0dfe6685b453488234eba';
+String _$dummyDataHash() => r'6c024aceb8869a4695abc200797024033d104635';
 
 /// See also [DummyData].
 @ProviderFor(DummyData)

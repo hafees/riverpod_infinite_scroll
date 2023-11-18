@@ -4,21 +4,21 @@ import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:riverpod_infinite_scroll/src/extensions/widget.dart';
 import 'package:riverpod_infinite_scroll/src/mixins/paginated_list_mixin.dart';
 
-///
-///## ListView or SliverList widget with Infinite scroll pagination
-///Builds a ListView or SliverList widget with Infinite scroll pagination
-///using Riverpod notifiers
-///
-///**Example**
-///```dart
-/// PaginatedListView(
-///       state: movies,
-///       itemBuilder: (data) => MovieItem(movie: data),
-///       notifier: ref.read(trendingMoviesListProvider.notifier),
-///     );
-///```
-///
 class PaginatedListView<T> extends StatefulWidget {
+  /// [ListView] or [SliverList] widget with automated pagination capabilities.
+  ///
+  /// Builds a ListView or SliverList widget with Infinite scroll pagination
+  /// using Riverpod notifiers
+  ///
+  /// **Example**
+  /// ```dart
+  /// PaginatedListView(
+  ///       state:  ref.watch(trendingMoviesListProvider),
+  ///       itemBuilder: (data) => MovieItem(movie: data),
+  ///       notifier: ref.read(trendingMoviesListProvider.notifier),
+  ///     );
+  /// ```
+  ///
   const PaginatedListView({
     required this.state,
     required this.itemBuilder,
@@ -34,12 +34,13 @@ class PaginatedListView<T> extends StatefulWidget {
     this.numSkeletons = 4,
     this.scrollDirection = Axis.vertical,
     this.pullToRefresh = true,
-    this.useSliverList = false,
+    this.useSliver = false,
     this.shrinkWrap = false,
-    this.customScrollController,
-    this.customScrollDelta,
+    this.reverse = false,
+    this.scrollController,
+    this.scrollDelta,
   }) : assert(
-          !(useSliverList && customScrollController == null),
+          !(useSliver && scrollController == null),
           'customScrollController can not be null for sliver lists ',
         );
 
@@ -69,7 +70,7 @@ class PaginatedListView<T> extends StatefulWidget {
   ///build more informative Widgets.
   ///By default a simple `CircularProgressIndicator.adaptive` is used.
   ///
-  ///** Example **
+  /// **Example**
   ///```dart
   ///loadingBuilder: (pagination) {
   ///   return Row(
@@ -101,18 +102,42 @@ class PaginatedListView<T> extends StatefulWidget {
     List<T> data,
   )? listViewBuilder;
 
-  ///If supplied, a skeleton loading animation will be showed initially. You
-  ///just need to pass the item widget with some dummy data. A skeleton will be
-  ///created automatically using
+  /// If supplied, a skeleton loading animation will be showed initially. You
+  /// just need to pass the item widget with some dummy data. A skeleton will be
+  /// created automatically using *skeletonizer* library
   final Widget? skeleton;
+
+  ///How many skeletons to show int the initial loading. Ignored if skeleton is
+  ///not provide.
   final int numSkeletons;
+
+  /// Builder funtion to build sepearator between  items. Just like
+  /// [ListView.separated]
   final Widget Function(BuildContext, int)? separatorBuilder;
+
+  /// The scroll direction. Defaults to [Axis.vertical]
   final Axis scrollDirection;
+
+  /// Whether pull to refresh functionality is required. Ignored for slivers.
   final bool pullToRefresh;
-  final bool useSliverList;
-  final ScrollController? customScrollController;
-  final double? customScrollDelta;
+
+  /// If true, a SliverList is returned. Either [SliverList.builder] or
+  /// [SliverList.separated]
+  final bool useSliver;
+
+  /// Automatically created for non sliver lists. But you can also provide one.
+  /// Mandatory if [useSliver] is true.
+  final ScrollController? scrollController;
+
+  /// When to trigger the next page request. By default, next page request is
+  /// triggered when there is only <=200 pixels to reach the end of scroll.
+  final double? scrollDelta;
+
+  /// Whether to enable [shrinkWrap] property on [ListView]. Defaults to false.
   final bool shrinkWrap;
+
+  /// Whether to enable [reverse] property on [ListView]. Defaults to false.
+  final bool reverse;
 
   @override
   State<PaginatedListView<T>> createState() => _PaginatedListViewState<T>();
@@ -122,11 +147,11 @@ class _PaginatedListViewState<T> extends State<PaginatedListView<T>>
     with PaginatedScrollController, PaginatedListMixin {
   @override
   void initState() {
-    if (widget.customScrollController != null) {
-      scrollController = widget.customScrollController!;
+    if (widget.scrollController != null) {
+      scrollController = widget.scrollController!;
       scrollControllerAutoDispose = false;
     }
-    PaginatedScrollController.scrollDelta = widget.customScrollDelta ?? 200.0;
+    PaginatedScrollController.scrollDelta = widget.scrollDelta ?? 200.0;
     super.initState();
   }
 
@@ -160,7 +185,7 @@ class _PaginatedListViewState<T> extends State<PaginatedListView<T>>
       return widget.listViewBuilder!.call(context, data);
     }
 
-    return widget.useSliverList ? _sliverListView(data) : _listView(data);
+    return widget.useSliver ? _sliverListView(data) : _listView(data);
   }
 
   Widget _listView(List<T> data) {
@@ -177,6 +202,7 @@ class _PaginatedListViewState<T> extends State<PaginatedListView<T>>
             itemBuilder(context, data, index),
         separatorBuilder: widget.separatorBuilder!,
         shrinkWrap: widget.shrinkWrap,
+        reverse: widget.reverse,
       );
     } else {
       listView = ListView.builder(
@@ -186,6 +212,7 @@ class _PaginatedListViewState<T> extends State<PaginatedListView<T>>
         itemBuilder: (BuildContext context, int index) =>
             itemBuilder(context, data, index),
         shrinkWrap: widget.shrinkWrap,
+        reverse: widget.reverse,
       );
     }
     return withRefreshIndicator(listView);

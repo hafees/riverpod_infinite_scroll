@@ -33,7 +33,6 @@ class _MovieSearchListState extends ConsumerState<MovieSearchList> {
                 state: movies,
                 itemBuilder: (data) => MovieGridItem(movie: data),
                 notifier: ref.read(searchMoviesProvider.notifier),
-                pullToRefresh: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 1 / 1.22,
                   crossAxisCount: 2,

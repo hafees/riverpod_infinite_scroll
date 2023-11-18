@@ -23,7 +23,6 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
   @override
   Widget build(BuildContext context) {
     final movies = ref.watch(searchMoviesProvider);
-
     return Scaffold(
       backgroundColor: primaryColor,
       body: SafeArea(
@@ -31,68 +30,72 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
           data: const SkeletonizerConfigData(
             effect: PulseEffect(from: Colors.white10, to: Colors.white24),
           ),
-          child: CustomScrollView(
-            controller: controller,
-            slivers: [
-              const SliverAppBar(
-                backgroundColor: primaryColor,
-                title: MovieSearchField(),
-                floating: true,
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.all(10),
-                sliver: gridViewEnabled
-                    ? PaginatedGridView(
-                        state: movies,
-                        itemBuilder: (data) => MovieGridItem(movie: data),
-                        notifier: ref.read(searchMoviesProvider.notifier),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 1 / 1.22,
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        useSliverGrid: true,
-                        customScrollController: controller,
-                        skeleton: MovieGridItem(
-                          movie: TmdbMovie(
-                            originalTitle: 'Dummy Title',
-                            overview: 'Long text summary',
+          child: RefreshIndicator(
+            onRefresh: ref.read(searchMoviesProvider.notifier).refresh,
+            child: CustomScrollView(
+              controller: controller,
+              slivers: [
+                const SliverAppBar(
+                  backgroundColor: primaryColor,
+                  title: MovieSearchField(),
+                  floating: true,
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.all(10),
+                  sliver: gridViewEnabled
+                      ? PaginatedGridView(
+                          state: movies,
+                          itemBuilder: (data) => MovieGridItem(movie: data),
+                          notifier: ref.read(searchMoviesProvider.notifier),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 1 / 1.22,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
                           ),
-                        ),
-                      )
-                    : PaginatedListView(
-                        state: movies,
-                        itemBuilder: (data) => MovieItem(movie: data),
-                        notifier: ref.read(searchMoviesProvider.notifier),
-                        useSliverList: true,
-                        customScrollController: controller,
-                        skeleton: MovieItem(
-                          movie: TmdbMovie(
-                            originalTitle: 'Dummy Title',
-                            overview:
-                                'Long text summary \n Another line of text',
+                          useSliver: true,
+                          scrollController: controller,
+                          skeleton: MovieGridItem(
+                            movie: TmdbMovie(
+                              originalTitle: 'Dummy Title',
+                              overview: 'Long text summary',
+                            ),
                           ),
+                        )
+                      : PaginatedListView(
+                          state: movies,
+                          itemBuilder: (data) => MovieItem(movie: data),
+                          notifier: ref.read(searchMoviesProvider.notifier),
+                          useSliver: true,
+                          scrollController: controller,
+                          skeleton: MovieItem(
+                            movie: TmdbMovie(
+                              originalTitle: 'Dummy Title',
+                              overview:
+                                  'Long text summary \n Another line of text',
+                            ),
+                          ),
+                          loadingBuilder: (pagination) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const CircularProgressIndicator.adaptive(),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Loading page ${pagination.currentPage + 1}'
+                                  ' of ${pagination.lastPage}',
+                                  style: summaryTextStyle,
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                        loadingBuilder: (pagination) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const CircularProgressIndicator.adaptive(),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Loading page ${pagination.currentPage + 1} of ${pagination.lastPage}',
-                                style: summaryTextStyle,
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

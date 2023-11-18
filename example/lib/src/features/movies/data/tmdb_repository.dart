@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:example/src/features/movies/models/tmdb_config/tmdb_config.dart';
 import 'package:example/src/features/movies/models/tmdb_movie/tmdb_movie.dart';
 import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 
@@ -13,7 +12,7 @@ class TmdbRepository {
     int page = 1,
     String? query,
   }) async {
-    await Future<void>.delayed(const Duration(seconds: 12));
+    await Future<void>.delayed(const Duration(seconds: 2));
     final results = await dio.get<Map<String, dynamic>>(
       'trending/movie/day?language=en-US&page=$page${query != null ? '&$query' : ''}',
     );
@@ -33,7 +32,7 @@ class TmdbRepository {
     int page = 1,
     String? query = '',
   }) async {
-    await Future<void>.delayed(const Duration(seconds: 12));
+    await Future<void>.delayed(const Duration(seconds: 2));
     final results = await dio.get<Map<String, dynamic>>(
       'search/movie?query=$query&include_adult=false&page=$page',
     );
@@ -48,12 +47,5 @@ class TmdbRepository {
         lastPage: data['total_pages'] as int,
       ),
     );
-  }
-
-  Future<TmdbConfig> getTmdbConfig() async {
-    final results = await dio.get<Map<String, dynamic>>(
-      'configuration',
-    );
-    return TmdbConfig.fromJson(results.data!);
   }
 }
