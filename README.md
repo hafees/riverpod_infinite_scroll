@@ -98,7 +98,7 @@ Your repository method should accept a `page` and `query` params. You can use th
 
 * The `paginationParser` field is a callback function that will receive the whole JSON data and you can parse data and return a [Pagination] object. The above code is suitable for TMDB API. 
 
-* If you're using the Laravel framework, then the JSON structure may look like the following.
+If you're using the Laravel framework, then the JSON structure may look like the following.
 
 ```json
 {
@@ -250,3 +250,10 @@ class MovieListSliver extends ConsumerWidget {
 ## Additional information
 
 You can check out the package and check the example folder for a movie listing app that fetches data using TMDB API. I have provided examples for ListView, SliverLists, GridView, query parameters, implementing pull-to-refresh functionality with CustomScrollView, etc.
+
+## Limitations
+
+I have tested the package with Riverpod AsyncNotifiers - both keepAlive and autodisposed. However, if you need to accept parameters in your build method, you should do some workarounds. Hopefully, this can be fixed in future versions (Might need to get some information from the Riverpod author).
+
+For the time being, you can either alter your logic to use the query filter instead of accepting parameters in build() or you can use  another mixin - [PaginatedDataMixinGeneric] in your provide and override the necessary methods.
+
