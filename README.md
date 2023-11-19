@@ -1,34 +1,35 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+The easiest infinite scrolling pagination using Riverpod. Just initialize your AsyncNotifier builds with your data-fetching repository method - no need to write any other logic.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+```dart
+PaginatedListView(
+  state: ref.watch(searchMoviesProvider.notifier),
+  itemBuilder: (data) => MovieItem(movie: data),
+  notifier: ref.read(searchMoviesProvider.notifier),
+),
+```
 
-The easiest infinite scrolling pagination using Riverpod. Just initialise your AsyncNotifier builds with your data fetching repository method - no need to write any other logic.
+Simple code like this can produce, infinite scroll pagination (The user scrolls to the end of the list and the next set of data is loaded automatically).
 
 ## Features
 
 - Easiest implementation of infinite scrolling pagination ever
 - Supports ListView, ListView.separator, SliverList, SliverList.se and GridView and SliverGrids
-- Default Widgets for initial loading, inline loading and error
-- Custom builders allows you customise all behaviours of the package
+- Skeleton loading animation support
+- Default Widgets for initial loading, inline loading, and error 
+- Custom builders allow you to customize all behaviors of the package
 - A data fetcher class that you may use independently to store paginated data
-- Well documented and provided an example
+- Well documented and an example app is provided for reference
 
 ## Getting started
 
 You will need Riverpod to use this package. If you're not using it, is an excellent state management library. See Riverpod documentation. Also start using, Riverpod generators.
 
-You can use this package on a Riverpod generated AsyncNotifier. Also, there are two widgets - PaginatedListView and PaginatedGridView which can be used in your widget tree 
+You can use this package on a Riverpod-generated AsyncNotifier. Also, there are two widgets - PaginatedListView for ListView builds and PaginatedGridView for GridView builds. 
 
 ## Usage
+
+As usual in the normal Riverpod state management application, there is a provider (for managing state), repository(for fetching data), and widgets (for UI interface). If you're not familiar with the Riverpod package, then see the documentation: https://riverpod.dev/docs/introduction/why_riverpod.
 
 ### In your provider:
 
@@ -41,7 +42,7 @@ Example:
 //A normal riverpod notifier.
 @riverpod
 class TrendingMoviesList extends _$TrendingMoviesList
-    with PaginatedDataMixin<TmdbMovie> // The mixin you shoul use
+    with PaginatedDataMixin<TmdbMovie> // The mixin you should use
     implements PaginatedNotifier<TmdbMovie> {
 
   //As usual, you should override the build method
@@ -50,20 +51,22 @@ class TrendingMoviesList extends _$TrendingMoviesList
     return init(
       dataFetcher: PaginatedDataRepository(
         fetcher: ref.watch(tmdbRepositoryProvider).getTrendingMovies,
-      ),
+      ), //Initialise with your data fetching method
     );
   }
 }
 
 ```
 
-You may have noticed that, there is an `init` method in the build() function. This is where we initialise our pagination and data fetching. The [PaginatedDataRepository] class is used for storing paginated data. You should initialise it with a fetcher method. This can be your repository method for retrieving paginated data. Otherwise, you can define the fetching function here (Recommended as you can avoid creating repositories for simple data fetching).
+You may have noticed that there is an `init` method in the build() function. This is where we initialize our pagination and data fetching. The [PaginatedDataRepository] class is used for storing paginated data. You should initialize it with a fetcher method. This can be your repository method for retrieving paginated data. Otherwise, you can define the fetching function directly (Recommended as you can avoid creating repositories for simple data fetching).
 
-The `fetcher` method will receive two parameters. The `page` to fetch and `query`.
+The `fetcher` method will receive two parameters. The `page` to fetch and `query` that you can use to filter the data. You only need to provide data according to these parameters. The pagination logic, scroll handlers, state changes etc are automatically handled by the package.
 
-For notifiers with keepAlive:true, you will need to use 
+Note: For notifiers with `keepAlive:true`, you will need to use the [KeepAlivePaginatedDataMixin]. Hopefully, this limitation can be removed in future versions.
 
 ### Your repository
+
+This is a sample code for the repository.
 
 ```dart
 Future<PaginatedResponse<TmdbMovie>> searchMovies({
@@ -87,15 +90,15 @@ Future<PaginatedResponse<TmdbMovie>> searchMovies({
     );
   }
 ```
-Your repository method should accept a `page` and `query` params. You can use these params in your data fetching logic. 
+Your repository method should accept a `page` and `query` params. You can use these parameters in your data-fetching logic. 
 
-The `dataMapper` function is a fromJson method which can be used to convert json data to models. If you use freezed package for generating models, this is created automatically. 
+* The `dataMapper` function is a fromJson method that can be used to convert JSON data to models. If you use `freezed` package for generating models, this is created automatically.
 
-The `dataField` is to identify the data part from the json data. The TMDB api returns the paginated movie data in 'results' field and hence we're using `dataFied:'results'`.
+* The `dataField` is to identify the data part from the JSON data. The TMDB API returns the paginated movie data in 'results' field and hence we're using `dataFied:'results'`.
 
-The `paginationParser` field is a callback function which will recieve the whole json data and you can parse data and return a the [Pagination] object. The above code is suitable for TMDB API. 
+* The `paginationParser` field is a callback function that will receive the whole JSON data and you can parse data and return a [Pagination] object. The above code is suitable for TMDB API. 
 
-If you're using Laravel framework, then json structure may look like the following.
+* If you're using the Laravel framework, then the JSON structure may look like the following.
 
 ```json
 {
@@ -121,7 +124,7 @@ If you're using Laravel framework, then json structure may look like the followi
 }
 ```
 
-So, the above code might need to be changed like below. 
+So, to parse data and pagination we need something like,
 
 ```dart
 return PaginatedResponse.fromJson(
@@ -244,12 +247,6 @@ class MovieListSliver extends ConsumerWidget {
 
 ```
 
-
-
-
-
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+You can check out the package and check the example folder for a movie listing app that fetches data using TMDB API. I have provided examples for ListView, SliverLists, GridView, query parameters, implementing pull-to-refresh functionality with CustomScrollView, etc.
