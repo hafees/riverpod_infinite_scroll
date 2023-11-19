@@ -18,7 +18,7 @@ class MovieListSliver extends ConsumerWidget {
         slivers: [
           PaginatedListView(
             state: movies,
-            itemBuilder: (data) => MovieItem(movie: data),
+            itemBuilder: (_, data) => MovieItem(movie: data),
             notifier: ref.read(trendingMoviesListProvider.notifier),
             useSliver: true,
             scrollController: scrollController, // Pass the scroll controller

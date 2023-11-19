@@ -91,8 +91,9 @@ mixin PaginatedDataMixin<T> on AutoDisposeAsyncNotifier<List<T>>
 
   @override
 
-  ///Refreshes notifier to load data again.
-  /// Waits for the future. Automatically invoked if if `pullToRefresh` is true
+  /// Refreshes notifier without emptying data. Useful for implementing
+  /// pull to refresh functionality
+  /// Automatically invoked  if `pullToRefresh` is true
   ///
   ///You can also call it manually using `notifier`
   ///Example
@@ -101,27 +102,28 @@ mixin PaginatedDataMixin<T> on AutoDisposeAsyncNotifier<List<T>>
   ///```
   /// You may override this in your notifiers
   Future<void> refresh() async {
-    ref.invalidateSelf();
-    await future;
+    _dataFetcher?.resetPagination();
+    state = AsyncData(await _dataFetcher!.fetchData());
   }
 
   @override
 
   ///Use this to set any query params. The set value will be passed to the
-  ///`
-  /// Waits for the future. Automatically invoked if if `pullToRefresh` is true
+  ///`fetcher`.
+  /// Waits for the future.
   ///
   ///You can also call it manually using `notifier`
   ///Example
   ///```
-  ///ref.read(searchMoviesProvider.notifier).refresh();
+  ///ref.read(searchMoviesProvider.notifier).setQueryFilter('search=Matrix');
   ///```
   /// You may override this in your notifiers
   Future<void> setQueryFilter(String query) async {
     if (queryFilter != query) {
       queryFilter = query;
       state = const AsyncLoading();
-      await refresh();
+      ref.invalidateSelf();
+      await future;
     }
   }
 }

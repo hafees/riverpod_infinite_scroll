@@ -45,7 +45,7 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
                   sliver: gridViewEnabled
                       ? PaginatedGridView(
                           state: movies,
-                          itemBuilder: (data) => MovieGridItem(movie: data),
+                          itemBuilder: (_, data) => MovieGridItem(movie: data),
                           notifier: ref.read(searchMoviesProvider.notifier),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -62,10 +62,11 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
                               overview: 'Long text summary',
                             ),
                           ),
+                          numSkeletons: 8,
                         )
                       : PaginatedListView(
                           state: movies,
-                          itemBuilder: (data) => MovieItem(movie: data),
+                          itemBuilder: (_, data) => MovieItem(movie: data),
                           notifier: ref.read(searchMoviesProvider.notifier),
                           useSliver: true,
                           scrollController: controller,
@@ -76,20 +77,24 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
                                   'Long text summary \n Another line of text',
                             ),
                           ),
-                          loadingBuilder: (pagination) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const CircularProgressIndicator.adaptive(),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Loading page ${pagination.currentPage + 1}'
-                                  ' of ${pagination.lastPage}',
-                                  style: summaryTextStyle,
-                                ),
-                              ],
+                          numSkeletons: 10,
+                          loadingBuilder: (_, pagination) {
+                            return Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const CircularProgressIndicator.adaptive(),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Loading page ${pagination.currentPage + 1}'
+                                    ' of ${pagination.lastPage}',
+                                    style: summaryTextStyle,
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),

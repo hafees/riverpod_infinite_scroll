@@ -15,7 +15,7 @@ class MovieList extends ConsumerWidget {
       appBar: AppBar(title: const Text('Trending Movies')),
       body: PaginatedListView(
         state: movies,
-        itemBuilder: (data) => MovieItem(movie: data),
+        itemBuilder: (_, data) => MovieItem(movie: data),
         notifier: ref.read(trendingMoviesListProvider.notifier),
       ),
     );

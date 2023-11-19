@@ -1,5 +1,5 @@
 import 'package:example/src/constants/colors.dart';
-import 'package:example/src/features/movies/views/movie_list_sliver.dart';
+import 'package:example/src/features/movies/views/movie_search_sliver.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: secondaryColor),
         useMaterial3: true,
       ),
-      home: MovieListSliver(),
+      home: const MovieSearchSliverList(),
       debugShowCheckedModeBanner: false,
     );
   }

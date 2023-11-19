@@ -26,7 +26,9 @@ The easiest infinite scrolling pagination using Riverpod. Just initialise your A
 
 You will need Riverpod to use this package. If you're not using it, is an excellent state management library. See Riverpod documentation. Also start using, Riverpod generators.
 
-You can use this package on a Riverpod generated AsyncNotifier. Also, there are two widgets - PaginatedListView and PaginatedGridView which can be used in your widget tree.
+You can use this package on a Riverpod generated AsyncNotifier. Also, there are two widgets - PaginatedListView and PaginatedGridView which can be used in your widget tree 
+
+## Usage
 
 ### In your provider:
 
@@ -244,14 +246,7 @@ class MovieListSliver extends ConsumerWidget {
 
 
 
-## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
-```
 
 ## Additional information
 

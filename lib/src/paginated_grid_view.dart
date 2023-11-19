@@ -65,16 +65,20 @@ class PaginatedGridView<T> extends StatefulWidget {
 
   ///Optional builder to use when the data is empty even after querying
   ///If omitted, a default error widget will be shown.
-  final Widget Function()? emptyListBuilder;
+  final Widget Function(BuildContext context)? emptyListBuilder;
 
   ///Required item builder similar to the `itemBuilder` in ListViews.
   ///The builder wil receive one data at a time
-  final Widget Function(T data) itemBuilder;
+  final Widget Function(BuildContext context, T data) itemBuilder;
 
   ///Optional error builder.
   ///The builder will receive the error object and stack trace.
   ///If omitted a generic error widget with a retry button will be used
-  final Widget Function(Object error, StackTrace stackTrace)? errorBuilder;
+  final Widget Function(
+    BuildContext context,
+    Object error,
+    StackTrace stackTrace,
+  )? errorBuilder;
 
   ///Optional loading state builder. This widget will show inside the ListView.
   ///The builder will also receive the `Pagination` object and can be used to
@@ -92,18 +96,20 @@ class PaginatedGridView<T> extends StatefulWidget {
   ///         width: 10,
   ///       ),
   ///       Text(
-  ///         'Loading page ${pagination.currentPage + 1} of ${pagination.lastPage}',
+  ///         'Loading page ${pagination.currentPage + 1} of '
+  ///         ' ${pagination.lastPage}',
   ///       ),
   ///     ],
   ///   );
   /// },
   /// ```
-  final Widget Function(Pagination pagination)? loadingBuilder;
+  final Widget Function(BuildContext context, Pagination pagination)?
+      loadingBuilder;
 
   ///The initial loading builder when there is no data. Defaults to an adaptive
   ///progress indicator. Also, you can use a skeleton loading animation using
   ///the `skeleton` field.
-  final Widget Function()? initialLoadingBuilder;
+  final Widget Function(BuildContext context)? initialLoadingBuilder;
 
   ///Low level grid view builder. Don't need to use in normal cases.
   ///Only useful, if you want to completely build the list yourself(May be
@@ -173,14 +179,15 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
         if (widget.notifier.hasData()) {
           return _listBuilder(widget.notifier.getCurrentData());
         }
-        return widget.errorBuilder?.call(error, stackTrace) ?? genericError;
+        return widget.errorBuilder?.call(context, error, stackTrace) ??
+            genericError;
       },
       loading: () {
         if (widget.notifier.hasData()) {
           return _listBuilder(widget.notifier.getCurrentData());
         }
         if (widget.initialLoadingBuilder != null) {
-          return widget.initialLoadingBuilder!.call();
+          return widget.initialLoadingBuilder!.call(context);
         }
         if (widget.skeleton != null) {
           return buildShimmer();
@@ -201,7 +208,7 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
   Widget _gridList(List<T> data) {
     Widget? listView;
     if (data.isEmpty) {
-      return widget.emptyListBuilder?.call() ?? noItemsFound;
+      return widget.emptyListBuilder?.call(context) ?? noItemsFound;
     }
     listView = GridView.builder(
       scrollDirection: widget.scrollDirection,
@@ -221,7 +228,8 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
     Widget? listView;
 
     if (data.isEmpty) {
-      return widget.emptyListBuilder?.call() ?? noItemsFound.sliverToBoxAdapter;
+      return widget.emptyListBuilder?.call(context) ??
+          noItemsFound.sliverToBoxAdapter;
     }
 
     listView = SliverGrid.builder(

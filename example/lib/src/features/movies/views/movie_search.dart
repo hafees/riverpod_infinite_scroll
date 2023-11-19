@@ -31,7 +31,7 @@ class _MovieSearchListState extends ConsumerState<MovieSearchList> {
         child: gridViewEnabled
             ? PaginatedGridView(
                 state: movies,
-                itemBuilder: (data) => MovieGridItem(movie: data),
+                itemBuilder: (_, data) => MovieGridItem(movie: data),
                 notifier: ref.read(searchMoviesProvider.notifier),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 1 / 1.22,
@@ -42,7 +42,7 @@ class _MovieSearchListState extends ConsumerState<MovieSearchList> {
               )
             : PaginatedListView(
                 state: movies,
-                itemBuilder: (data) => MovieItem(movie: data),
+                itemBuilder: (_, data) => MovieItem(movie: data),
                 notifier: ref.read(searchMoviesProvider.notifier),
               ),
       ),

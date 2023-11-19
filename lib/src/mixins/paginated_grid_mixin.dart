@@ -23,11 +23,11 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
   Widget get statusRow => widget.state.maybeWhen(
         loading: () {
           return widget.loadingBuilder
-                  ?.call(widget.notifier.getPaginationData()) ??
+                  ?.call(context, widget.notifier.getPaginationData()) ??
               LoadingIndicator.small.centered.withPaddingAll(10);
         },
         error: (error, stackTrace) =>
-            widget.errorBuilder?.call(error, stackTrace) ??
+            widget.errorBuilder?.call(context, error, stackTrace) ??
             const Text('An error occurred').centered,
         orElse: SizedBox.shrink,
       );
@@ -61,7 +61,8 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
   }
 
   Widget get loadingBuilder {
-    return widget.loadingBuilder?.call(widget.notifier.getPaginationData()) ??
+    return widget.loadingBuilder
+            ?.call(context, widget.notifier.getPaginationData()) ??
         loadingIndicator;
   }
 
@@ -91,7 +92,7 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
     if (shouldRequireStatusRow && data.length == index) {
       return statusRow;
     }
-    return widget.itemBuilder.call(data[index]);
+    return widget.itemBuilder.call(context, data[index]);
   }
 
   FutureOr<void> onNextPage() {
