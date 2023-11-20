@@ -17,5 +17,7 @@ For security reasons, the API key is stored in an .env file and the *envied* pac
     or
     `dart run build_runner build`
     
-Now you should be ready to start.
+Now you should be ready to start the project.
+
+
 
