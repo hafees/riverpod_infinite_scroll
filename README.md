@@ -3,6 +3,7 @@ The easiest infinite scrolling pagination using Riverpod. Just initialize your A
 
 https://github.com/hafees/riverpod_infinite_scroll/assets/925404/7448fbbc-780f-47d5-a373-fce25f26e394
 
+<video  src="https://github.com/hafees/riverpod_infinite_scroll/assets/925404/7448fbbc-780f-47d5-a373-fce25f26e394"></video>
 
 ```dart
 PaginatedListView(
