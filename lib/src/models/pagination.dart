@@ -10,12 +10,15 @@ part 'pagination.g.dart';
 class Pagination with _$Pagination {
   factory Pagination({
     /// total number of records
+    // ignore: invalid_annotation_target
     @JsonKey(name: 'total_number') @Default(0) int totalNumber,
 
     /// the currently requested page
+    // ignore: invalid_annotation_target
     @JsonKey(name: 'current_page') @Default(1) int currentPage,
 
     /// number of total pages
+    // ignore: invalid_annotation_target
     @JsonKey(name: 'last_page') @Default(1) int lastPage,
   }) = _Pagination;
 
