@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
-import 'package:riverpod_infinite_scroll/src/extensions/widget.dart';
-import 'package:riverpod_infinite_scroll/src/mixins/paginated_grid_mixin.dart';
+import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
+import 'package:riverpod_infinite_scroll_pagination/src/extensions/widget.dart';
+import 'package:riverpod_infinite_scroll_pagination/src/mixins/paginated_grid_mixin.dart';
 
 class PaginatedGridView<T> extends StatefulWidget {
   /// [GridView] or [SliverGrid] widget with automated pagination

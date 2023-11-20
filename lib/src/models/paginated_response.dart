@@ -1,4 +1,4 @@
-import 'package:riverpod_infinite_scroll/src/models/pagination.dart';
+import 'package:riverpod_infinite_scroll_pagination/src/models/pagination.dart';
 
 /// ## A generic Class to store with data and pagination
 /// Binds data and pagination

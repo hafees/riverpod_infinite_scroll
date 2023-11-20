@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
 
 part 'dummy_data_provider.g.dart';
 

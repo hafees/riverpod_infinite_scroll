@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
 
 import './dummy/dummy_data_provider.dart';
 import 'container/container.dart';
@@ -42,7 +42,7 @@ void main() {
       final dummyDataRepository = container.read(dummyDataRepositoryProvider);
       expect(dummyDataRepository, isA<Mock>());
       expect(dummyDataRepository, isA<DummyDataRepository>());
-      expect(dummyDataRepository.getPaginatedData(), isA<Function>);
+      expect(dummyDataRepository.getPaginatedData, isA<Function>());
     });
   });
 

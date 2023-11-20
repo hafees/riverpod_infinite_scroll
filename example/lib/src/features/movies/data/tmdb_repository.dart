@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:example/src/features/movies/models/tmdb_movie/tmdb_movie.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
 
 class TmdbRepository {
   const TmdbRepository({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:riverpod_infinite_scroll/src/extensions/widget.dart';
+import 'package:riverpod_infinite_scroll_pagination/src/extensions/widget.dart';
 
 class NoItemsFound extends StatelessWidget {
   const NoItemsFound({

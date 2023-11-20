@@ -1,5 +1,5 @@
 ///Riverpod Infinite Scroll Library.
-library riverpod_infinite_scroll;
+library riverpod_infinite_scroll_pagination;
 
 export 'src/classes/paginated_data_repository.dart';
 export 'src/interfaces/paginated_notifier.dart';

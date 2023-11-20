@@ -1,10 +1,10 @@
 /// Part of riverpod infinite scroll library
-library riverpod_infinite_scroll;
+library riverpod_infinite_scroll_pagination;
 
 import 'dart:async';
 
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
-import 'package:riverpod_infinite_scroll/src/types/types.dart';
+import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
+import 'package:riverpod_infinite_scroll_pagination/src/types/types.dart';
 
 mixin PaginatedDataMixinGeneric<T> implements PaginatedNotifier<T> {
   List<T> _data = [];

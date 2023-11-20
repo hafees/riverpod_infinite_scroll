@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
 
 class PaginatedListBuilder<T> extends StatefulWidget {
   const PaginatedListBuilder({

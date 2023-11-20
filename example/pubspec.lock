@@ -643,7 +643,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.6"
-  riverpod_infinite_scroll:
+  riverpod_infinite_scroll_pagination:
     dependency: "direct main"
     description:
       path: ".."

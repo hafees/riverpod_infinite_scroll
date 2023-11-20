@@ -5,7 +5,7 @@ import 'package:example/src/features/movies/views/widgets/movie_item.dart';
 import 'package:example/src/features/movies/views/widgets/movie_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
 
 class MovieSearchList extends ConsumerStatefulWidget {
   const MovieSearchList({super.key});

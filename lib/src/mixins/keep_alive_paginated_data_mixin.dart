@@ -1,10 +1,10 @@
 /// Part of riverpod infinite scroll library
-library riverpod_infinite_scroll;
+library riverpod_infinite_scroll_pagination;
 
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
 
 ///Mixin for KeepAlive Providers
 ///(Providers created with @Riverpod(keepAlive:true))
