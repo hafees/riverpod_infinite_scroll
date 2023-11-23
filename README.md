@@ -1,8 +1,8 @@
 The easiest infinite scrolling pagination using Riverpod. Just initialize your AsyncNotifier build method with your data-fetching repository method - no need to write any other logic.
 
-https://github.com/hafees/riverpod_infinite_scroll/assets/925404/7448fbbc-780f-47d5-a373-fce25f26e394
+![riverpod_inifinite_scroll](https://github.com/hafees/riverpod_infinite_scroll/assets/925404/08cc0bbc-ba35-45ea-95ab-5701d74400d0)
 
-<video  src="https://github.com/hafees/riverpod_infinite_scroll/assets/925404/7448fbbc-780f-47d5-a373-fce25f26e394"></video>
+Checkout video: https://github.com/hafees/riverpod_infinite_scroll/assets/925404/128aadef-c14e-408b-a042-a3d42b67cc85
 
 ```dart
 PaginatedListView(
