@@ -21,18 +21,17 @@ Pagination _$PaginationFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Pagination {
   /// total number of records
+// ignore: invalid_annotation_target
   @JsonKey(name: 'total_number')
   int get totalNumber => throw _privateConstructorUsedError;
 
-  /// records per page
-  @JsonKey(name: 'per_page')
-  int get perPage => throw _privateConstructorUsedError;
-
   /// the currently requested page
+// ignore: invalid_annotation_target
   @JsonKey(name: 'current_page')
   int get currentPage => throw _privateConstructorUsedError;
 
   /// number of total pages
+// ignore: invalid_annotation_target
   @JsonKey(name: 'last_page')
   int get lastPage => throw _privateConstructorUsedError;
 
@@ -50,7 +49,6 @@ abstract class $PaginationCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'total_number') int totalNumber,
-      @JsonKey(name: 'per_page') int perPage,
       @JsonKey(name: 'current_page') int currentPage,
       @JsonKey(name: 'last_page') int lastPage});
 }
@@ -69,7 +67,6 @@ class _$PaginationCopyWithImpl<$Res, $Val extends Pagination>
   @override
   $Res call({
     Object? totalNumber = null,
-    Object? perPage = null,
     Object? currentPage = null,
     Object? lastPage = null,
   }) {
@@ -77,10 +74,6 @@ class _$PaginationCopyWithImpl<$Res, $Val extends Pagination>
       totalNumber: null == totalNumber
           ? _value.totalNumber
           : totalNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-      perPage: null == perPage
-          ? _value.perPage
-          : perPage // ignore: cast_nullable_to_non_nullable
               as int,
       currentPage: null == currentPage
           ? _value.currentPage
@@ -104,7 +97,6 @@ abstract class _$$PaginationImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'total_number') int totalNumber,
-      @JsonKey(name: 'per_page') int perPage,
       @JsonKey(name: 'current_page') int currentPage,
       @JsonKey(name: 'last_page') int lastPage});
 }
@@ -121,7 +113,6 @@ class __$$PaginationImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? totalNumber = null,
-    Object? perPage = null,
     Object? currentPage = null,
     Object? lastPage = null,
   }) {
@@ -129,10 +120,6 @@ class __$$PaginationImplCopyWithImpl<$Res>
       totalNumber: null == totalNumber
           ? _value.totalNumber
           : totalNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-      perPage: null == perPage
-          ? _value.perPage
-          : perPage // ignore: cast_nullable_to_non_nullable
               as int,
       currentPage: null == currentPage
           ? _value.currentPage
@@ -151,7 +138,6 @@ class __$$PaginationImplCopyWithImpl<$Res>
 class _$PaginationImpl implements _Pagination {
   _$PaginationImpl(
       {@JsonKey(name: 'total_number') this.totalNumber = 0,
-      @JsonKey(name: 'per_page') this.perPage = 10,
       @JsonKey(name: 'current_page') this.currentPage = 1,
       @JsonKey(name: 'last_page') this.lastPage = 1});
 
@@ -159,28 +145,26 @@ class _$PaginationImpl implements _Pagination {
       _$$PaginationImplFromJson(json);
 
   /// total number of records
+// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'total_number')
   final int totalNumber;
 
-  /// records per page
-  @override
-  @JsonKey(name: 'per_page')
-  final int perPage;
-
   /// the currently requested page
+// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'current_page')
   final int currentPage;
 
   /// number of total pages
+// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'last_page')
   final int lastPage;
 
   @override
   String toString() {
-    return 'Pagination(totalNumber: $totalNumber, perPage: $perPage, currentPage: $currentPage, lastPage: $lastPage)';
+    return 'Pagination(totalNumber: $totalNumber, currentPage: $currentPage, lastPage: $lastPage)';
   }
 
   @override
@@ -190,7 +174,6 @@ class _$PaginationImpl implements _Pagination {
             other is _$PaginationImpl &&
             (identical(other.totalNumber, totalNumber) ||
                 other.totalNumber == totalNumber) &&
-            (identical(other.perPage, perPage) || other.perPage == perPage) &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage) &&
             (identical(other.lastPage, lastPage) ||
@@ -200,7 +183,7 @@ class _$PaginationImpl implements _Pagination {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, totalNumber, perPage, currentPage, lastPage);
+      Object.hash(runtimeType, totalNumber, currentPage, lastPage);
 
   @JsonKey(ignore: true)
   @override
@@ -219,7 +202,6 @@ class _$PaginationImpl implements _Pagination {
 abstract class _Pagination implements Pagination {
   factory _Pagination(
       {@JsonKey(name: 'total_number') final int totalNumber,
-      @JsonKey(name: 'per_page') final int perPage,
       @JsonKey(name: 'current_page') final int currentPage,
       @JsonKey(name: 'last_page') final int lastPage}) = _$PaginationImpl;
 
@@ -229,21 +211,19 @@ abstract class _Pagination implements Pagination {
   @override
 
   /// total number of records
+// ignore: invalid_annotation_target
   @JsonKey(name: 'total_number')
   int get totalNumber;
   @override
 
-  /// records per page
-  @JsonKey(name: 'per_page')
-  int get perPage;
-  @override
-
   /// the currently requested page
+// ignore: invalid_annotation_target
   @JsonKey(name: 'current_page')
   int get currentPage;
   @override
 
   /// number of total pages
+// ignore: invalid_annotation_target
   @JsonKey(name: 'last_page')
   int get lastPage;
   @override

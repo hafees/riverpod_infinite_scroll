@@ -4,90 +4,107 @@ library riverpod_infinite_scroll_pagination;
 import 'dart:async';
 
 import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
-import 'package:riverpod_infinite_scroll_pagination/src/types/types.dart';
 
+/// Mixin for default AsyncNotifiers that needs to accept params in build method
+/// You will need to change state manually
 mixin PaginatedDataMixinGeneric<T> implements PaginatedNotifier<T> {
-  List<T> _data = [];
-  int _currentPage = 0;
-  int _totalPages = 0;
-  int _totalRecords = 0;
-  bool _isFetching = false;
   String? queryFilter;
-  PaginatedDataFetcher<T>? paginatedDataFetcher;
+  late PaginatedDataRepository<T>? _dataFetcher;
+
+  ///This method should be called inside the `build` method of your provider
+  ///to initialize the pagination, state and
+  ///data fetching.
+  ///
+  ///**Example**
+  /// ```dart
+  /// @override
+  /// FutureOr<List<TmdbMovie>> build() async {
+  ///   return init(
+  ///     dataFetcher: PaginatedDataRepository(
+  ///       fetcher: ref.watch(tmdbRepositoryProvider).getTrendingMovies,
+  ///     ),
+  ///   );
+  /// }
+  /// ```
+  Future<List<T>> init({
+    required PaginatedDataRepository<T> dataFetcher,
+  }) async {
+    _dataFetcher = dataFetcher;
+    return _dataFetcher!.fetchData();
+  }
 
   @override
+
+  /// checks whether data exists.
+  /// Overrides form `PaginatedNotifier` Interface
+  ///
+  /// You may override this in your notifiers
   bool hasData() {
-    return _data.isNotEmpty;
+    return _dataFetcher!.data.isNotEmpty;
   }
 
   @override
+
+  /// checks whether new data can be fetched.
+  /// Overrides form `PaginatedNotifier` interface
+  ///
+  /// You may override this in your notifiers
   bool canFetch() {
-    return (_currentPage == 0 || _currentPage < _totalPages) && !_isFetching;
-  }
-
-  Future<List<T>> getData() async {
-    assert(
-      paginatedDataFetcher != null,
-      'The method for accessing data is not initialized. '
-      'Initialize paginatedDataFetcher',
-    );
-    _isFetching = true;
-    try {
-      final response = await paginatedDataFetcher?.call(
-        page: _currentPage + 1,
-        query: queryFilter,
-      );
-
-      _totalPages = response?.pagination?.lastPage ?? 1;
-      _currentPage = response?.pagination?.currentPage ?? 0;
-      _totalRecords = response?.pagination?.totalNumber ?? 0;
-
-      if (response?.data != null) {
-        _data = _currentPage > 1
-            ? [..._data, ...response!.data]
-            : [...response!.data];
-      }
-    } catch (_) {
-      rethrow;
-    } finally {
-      _isFetching = false;
-    }
-    return _data;
+    return _dataFetcher!.canFetch();
   }
 
   @override
+
+  ///Gets already available data.
+  /// Overrides form `PaginatedNotifier` interface
+  ///
+  /// You may override this in your notifiers
   List<T> getCurrentData() {
-    return _data;
-  }
-
-  void resetData() {
-    _data = [];
+    return _dataFetcher!.data;
   }
 
   @override
+
+  ///Gets the pagination data.
+  /// Overrides form `PaginatedNotifier` interface
+  ///
+  /// You may override this in your notifiers
   Pagination getPaginationData() {
-    return Pagination(
-      totalNumber: _totalRecords,
-      currentPage: _currentPage,
-      lastPage: _totalPages,
-    );
+    return _dataFetcher!.getPaginationData();
   }
 
-  void resetPagination({int? startPage}) {
-    if (startPage != null && startPage > 0) {
-      _currentPage = startPage - 1;
-    } else {
-      _currentPage = 0;
-    }
-    _totalPages = 0;
+  /// Reloads the data. Resets the pagination and fetches the data again.
+  /// You can then get the data by calling `getCurrentData()`
+  Future<List<T>> reloadData() async {
+    _dataFetcher?.resetPagination();
+    return _dataFetcher!.fetchData();
   }
 
   @override
+
+  ///Use this to set any query params. The set value will be passed to the
+  ///`fetcher`.
+  /// Waits for the future.
+  ///
+  ///You can also call it manually using `notifier`
+  ///Example
+  ///```
+  ///ref.read(searchMoviesProvider.notifier).setQueryFilter('search=Matrix');
+  ///```
+
   Future<void> setQueryFilter(String query) async {
     if (queryFilter != query) {
-      resetData();
       queryFilter = query;
-      await refresh();
     }
+  }
+
+  ///Initiates data fetching.
+  ///
+  ///The fetched data need to be assigned to your state manually.
+  ///
+  ///Example: `state = AsyncData(await fetchData());`
+  Future<List<T>> fetchData() async {
+    await _dataFetcher!.fetchData();
+    return _dataFetcher!.data;
   }
 }

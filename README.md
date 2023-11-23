@@ -1,4 +1,3 @@
-
 The easiest infinite scrolling pagination using Riverpod. Just initialize your AsyncNotifier build method with your data-fetching repository method - no need to write any other logic.
 
 https://github.com/hafees/riverpod_infinite_scroll/assets/925404/7448fbbc-780f-47d5-a373-fce25f26e394
@@ -20,7 +19,7 @@ Simple code like this can produce, infinite scroll pagination (The user scrolls 
 - Easiest implementation of infinite scrolling pagination ever
 - Supports ListView, ListView.separator, SliverList, SliverList.se and GridView and SliverGrids
 - Skeleton loading animation support
-- Default Widgets for initial loading, inline loading, and error 
+- Default Widgets for initial loading, inline loading, and error
 - Custom builders allow you to customize all behaviors of the package
 - A data fetcher class that you may use independently to store paginated data
 - Well documented and an example app is provided for reference
@@ -29,7 +28,7 @@ Simple code like this can produce, infinite scroll pagination (The user scrolls 
 
 You will need Riverpod to use this package. If you're not using it, is an excellent state management library. See Riverpod documentation. Also start using, Riverpod generators.
 
-You can use this package on a Riverpod-generated AsyncNotifier. Also, there are two widgets - PaginatedListView for ListView builds and PaginatedGridView for GridView builds. 
+You can use this package on a Riverpod-generated AsyncNotifier. Also, there are two widgets - PaginatedListView for ListView builds and PaginatedGridView for GridView builds.
 
 ## Usage
 
@@ -94,37 +93,38 @@ Future<PaginatedResponse<TmdbMovie>> searchMovies({
     );
   }
 ```
-Your repository method should accept a `page` and `query` params. You can use these parameters in your data-fetching logic. 
 
-* The `dataMapper` function is a fromJson method that can be used to convert JSON data to models. If you use `freezed` package for generating models, this is created automatically.
+Your repository method should accept a `page` and `query` params. You can use these parameters in your data-fetching logic.
 
-* The `dataField` is to identify the data part from the JSON data. The TMDB API returns the paginated movie data in 'results' field and hence we're using `dataFied:'results'`.
+- The `dataMapper` function is a fromJson method that can be used to convert JSON data to models. If you use `freezed` package for generating models, this is created automatically.
 
-* The `paginationParser` field is a callback function that will receive the whole JSON data and you can parse data and return a [Pagination] object. The above code is suitable for TMDB API. 
+- The `dataField` is to identify the data part from the JSON data. The TMDB API returns the paginated movie data in 'results' field and hence we're using `dataFied:'results'`.
+
+- The `paginationParser` field is a callback function that will receive the whole JSON data and you can parse data and return a [Pagination] object. The above code is suitable for TMDB API.
 
 If you're using the Laravel framework, then the JSON structure may look like the following.
 
 ```json
 {
-   "total": 50,
-   "per_page": 15,
-   "current_page": 1,
-   "last_page": 4,
-   "first_page_url": "http://laravel.app?page=1",
-   "last_page_url": "http://laravel.app?page=4",
-   "next_page_url": "http://laravel.app?page=2",
-   "prev_page_url": null,
-   "path": "http://laravel.app",
-   "from": 1,
-   "to": 15,
-   "data":[
-        {
-            // Record...
-        },
-        {
-            // Record...
-        }
-   ]
+  "total": 50,
+  "per_page": 15,
+  "current_page": 1,
+  "last_page": 4,
+  "first_page_url": "http://laravel.app?page=1",
+  "last_page_url": "http://laravel.app?page=4",
+  "next_page_url": "http://laravel.app?page=2",
+  "prev_page_url": null,
+  "path": "http://laravel.app",
+  "from": 1,
+  "to": 15,
+  "data": [
+    {
+      // Record...
+    },
+    {
+      // Record...
+    }
+  ]
 }
 ```
 
@@ -145,12 +145,13 @@ return PaginatedResponse.fromJson(
 
 ### Your widget tree
 
-There are two widgets. `PaginatedListView` and `PaginatedGridView`. 
+There are two widgets. `PaginatedListView` and `PaginatedGridView`.
 
 **PaginatedListView**
 Builds a list using the Flutter [ListView] widget.
 
-*Example*
+_Example_
+
 ```dart
 PaginatedListView(
   state: ref.watch(searchMoviesProvider.notifier),
@@ -162,7 +163,8 @@ PaginatedListView(
 **PaginatedGridView**
 Builds a list using the Flutter [GridView] widget.
 
-*Example*
+_Example_
+
 ```dart
 PaginatedGridView(
       state: ref.watch(searchMoviesProvider),,
@@ -179,9 +181,10 @@ PaginatedGridView(
 
 ## Customisation
 
-You can pass a `skeleton` to create skeleton loading animation. 
+You can pass a `skeleton` to create skeleton loading animation.
 
-*Example*
+_Example_
+
 ```dart
 PaginatedListView(
   state: ref.watch(searchMoviesProvider),
@@ -199,7 +202,8 @@ PaginatedListView(
 
 It uses the Skeletonizer dart package for building skeleton animation. If the default animations need to be customised you can include a [SkeletonizerConfig] widget in root level or as a parent widget.
 
-*Example*
+_Example_
+
 ```dart
 SkeletonizerConfig(
   data: const SkeletonizerConfigData(
@@ -211,14 +215,14 @@ SkeletonizerConfig(
 
 You can also use builder methods for customising the output. The following builders are available.
 
-`initialLoadingBuilder`: To customise the initial loading. 
+`initialLoadingBuilder`: To customise the initial loading.
 `loadingBuilder`: To customise the loading animation when next page is fetched.
 `emptyListBuilder`: What to show when the fetched data is empty
 `errorBuilder`: When there is an error
 
 ### Using Slivers
 
-You just need to set the `useSliver` parameter to `true` to get sliver widgets. 
+You just need to set the `useSliver` parameter to `true` to get sliver widgets.
 Note: When `useSliver` is true, you will need to create a [ScrollController] and attach it to the [CustomScrollView] and then pass the `scrollController`.
 
 **Example**
@@ -259,5 +263,25 @@ You can check out the package and check the example folder for a movie listing a
 
 I have tested the package with Riverpod AsyncNotifiers - both keepAlive and autodisposed. However, if you need to accept parameters in your build method, you should do some workarounds. Hopefully, this can be fixed in future versions (Might need to get some information from the Riverpod author).
 
-For the time being, you can either alter your logic to use the query filter instead of accepting parameters in build() or you can use  another mixin - [PaginatedDataMixinGeneric] in your provide and override the necessary methods.
+For the time being, you can either alter your logic to use the query filter instead of accepting parameters in `build()`or you can use another mixin - **[PaginatedDataMixinGeneric]** in your provider and override the following methods. (Just and copy and paste this methods and it should work fine)
 
+```dart
+  @override
+  Future<void> getNextPage() async {
+    state = const AsyncLoading();
+    state = AsyncData(await fetchData());
+  }
+
+  @override
+  Future<void> refresh() async {
+    state = const AsyncLoading();
+    state = AsyncData(await reloadData());
+  }
+```
+
+## More Examples
+
+Checkout more code samples:
+https://pub.dev/packages/riverpod_infinite_scroll_pagination/example
+
+Also you can checkout the example project.
