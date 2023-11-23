@@ -21,17 +21,14 @@ Pagination _$PaginationFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Pagination {
   /// total number of records
-// ignore: invalid_annotation_target
   @JsonKey(name: 'total_number')
   int get totalNumber => throw _privateConstructorUsedError;
 
   /// the currently requested page
-// ignore: invalid_annotation_target
   @JsonKey(name: 'current_page')
   int get currentPage => throw _privateConstructorUsedError;
 
   /// number of total pages
-// ignore: invalid_annotation_target
   @JsonKey(name: 'last_page')
   int get lastPage => throw _privateConstructorUsedError;
 
@@ -145,19 +142,16 @@ class _$PaginationImpl implements _Pagination {
       _$$PaginationImplFromJson(json);
 
   /// total number of records
-// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'total_number')
   final int totalNumber;
 
   /// the currently requested page
-// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'current_page')
   final int currentPage;
 
   /// number of total pages
-// ignore: invalid_annotation_target
   @override
   @JsonKey(name: 'last_page')
   final int lastPage;
@@ -211,19 +205,16 @@ abstract class _Pagination implements Pagination {
   @override
 
   /// total number of records
-// ignore: invalid_annotation_target
   @JsonKey(name: 'total_number')
   int get totalNumber;
   @override
 
   /// the currently requested page
-// ignore: invalid_annotation_target
   @JsonKey(name: 'current_page')
   int get currentPage;
   @override
 
   /// number of total pages
-// ignore: invalid_annotation_target
   @JsonKey(name: 'last_page')
   int get lastPage;
   @override
