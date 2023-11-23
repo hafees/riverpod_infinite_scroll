@@ -1,6 +1,11 @@
 The easiest infinite scrolling pagination using Riverpod. Just initialize your AsyncNotifier build method with your data-fetching repository method - no need to write any other logic.
 
-![riverpod_inifinite_scroll](https://github.com/hafees/riverpod_infinite_scroll/assets/925404/08cc0bbc-ba35-45ea-95ab-5701d74400d0)
+
+<p align="center">
+
+![infinite_scroll1](https://github.com/hafees/riverpod_infinite_scroll/assets/925404/79ec789a-9ffa-4c3d-af72-3c2b97f8df61)
+
+</p>
 
 Checkout video: https://github.com/hafees/riverpod_infinite_scroll/assets/925404/128aadef-c14e-408b-a042-a3d42b67cc85
 
