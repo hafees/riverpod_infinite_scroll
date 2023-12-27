@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Fixing an error in documentation
+
 ## 1.0.2
 
 - Documentation updates

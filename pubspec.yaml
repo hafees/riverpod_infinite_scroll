@@ -1,6 +1,6 @@
 name: riverpod_infinite_scroll_pagination
 description: An infinite scroll pagination using Riverpod (Lazy loading pages as the user scrolls to the end of the list).
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/hafees/riverpod_infinite_scroll
 repository: https://github.com/hafees/riverpod_infinite_scroll
 issue_tracker: https://github.com/hafees/riverpod_infinite_scroll/issues

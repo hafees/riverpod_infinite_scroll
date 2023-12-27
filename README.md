@@ -1,6 +1,5 @@
 The easiest infinite scrolling pagination using Riverpod. Just initialize your AsyncNotifier build method with your data-fetching repository method - no need to write any other logic.
 
-
 <p align="center">
 
 ![infinite_scroll1](https://github.com/hafees/riverpod_infinite_scroll/assets/925404/79ec789a-9ffa-4c3d-af72-3c2b97f8df61)
@@ -11,7 +10,7 @@ Checkout video: https://github.com/hafees/riverpod_infinite_scroll/assets/925404
 
 ```dart
 PaginatedListView(
-  state: ref.watch(searchMoviesProvider.notifier),
+  state: ref.watch(searchMoviesProvider),
   itemBuilder: (data) => MovieItem(movie: data),
   notifier: ref.read(searchMoviesProvider.notifier),
 ),
@@ -59,7 +58,7 @@ class TrendingMoviesList extends _$TrendingMoviesList
     return init(
       dataFetcher: PaginatedDataRepository(
         fetcher: ref.watch(tmdbRepositoryProvider).getTrendingMovies,
-      ), //Initialise with your data fetching method
+      ), //Initialize with your data fetching method
     );
   }
 }
@@ -103,7 +102,7 @@ Your repository method should accept a `page` and `query` params. You can use th
 
 - The `dataMapper` function is a fromJson method that can be used to convert JSON data to models. If you use `freezed` package for generating models, this is created automatically.
 
-- The `dataField` is to identify the data part from the JSON data. The TMDB API returns the paginated movie data in 'results' field and hence we're using `dataFied:'results'`.
+- The `dataField` is to identify the data part from the JSON data. The TMDB API returns the paginated movie data in 'results' field and hence we're using `dataField:'results'`.
 
 - The `paginationParser` field is a callback function that will receive the whole JSON data and you can parse data and return a [Pagination] object. The above code is suitable for TMDB API.
 
@@ -184,7 +183,7 @@ PaginatedGridView(
     );
 ```
 
-## Customisation
+## Customization
 
 You can pass a `skeleton` to create skeleton loading animation.
 
@@ -205,7 +204,7 @@ PaginatedListView(
 ),
 ```
 
-It uses the Skeletonizer dart package for building skeleton animation. If the default animations need to be customised you can include a [SkeletonizerConfig] widget in root level or as a parent widget.
+It uses the Skeletonizer dart package for building skeleton animation. If the default animations need to be customized you can include a [SkeletonizerConfig] widget in root level or as a parent widget.
 
 _Example_
 
@@ -218,10 +217,10 @@ SkeletonizerConfig(
 ),
 ```
 
-You can also use builder methods for customising the output. The following builders are available.
+You can also use builder methods for customizing the output. The following builders are available.
 
-`initialLoadingBuilder`: To customise the initial loading.
-`loadingBuilder`: To customise the loading animation when next page is fetched.
+`initialLoadingBuilder`: To customize the initial loading.
+`loadingBuilder`: To customize the loading animation when next page is fetched.
 `emptyListBuilder`: What to show when the fetched data is empty
 `errorBuilder`: When there is an error
 
@@ -274,13 +273,13 @@ For the time being, you can either alter your logic to use the query filter inst
   @override
   Future<void> getNextPage() async {
     state = const AsyncLoading();
-    state = AsyncData(await fetchData());
+    state = await AsyncValue.guard(() => _dataFetcher!.fetchData());
   }
 
   @override
   Future<void> refresh() async {
     state = const AsyncLoading();
-    state = AsyncData(await reloadData());
+    state = await AsyncValue.guard(() => _dataFetcher!.fetchData());
   }
 ```
 

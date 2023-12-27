@@ -11,3 +11,4 @@ export 'src/models/paginated_response.dart';
 export 'src/models/pagination.dart';
 export 'src/paginated_grid_view.dart';
 export 'src/paginated_list_view.dart';
+export 'src/widgets/infinite_scroll_pagination_config.dart';

@@ -85,8 +85,9 @@ mixin PaginatedDataMixin<T> on AutoDisposeAsyncNotifier<List<T>>
   ///
   /// You may override this in your notifiers
   Future<void> getNextPage() async {
+    print('Called getNextPage');
     state = const AsyncLoading();
-    state = AsyncData(await _dataFetcher!.fetchData());
+    state = await AsyncValue.guard(() => _dataFetcher!.fetchData());
   }
 
   @override
@@ -102,8 +103,12 @@ mixin PaginatedDataMixin<T> on AutoDisposeAsyncNotifier<List<T>>
   ///```
   /// You may override this in your notifiers
   Future<void> refresh() async {
+    if (_dataFetcher!.data.isEmpty) {
+      //Show loading in screen when there is no data
+      state = const AsyncLoading();
+    }
     _dataFetcher?.resetPagination();
-    state = AsyncData(await _dataFetcher!.fetchData());
+    state = await AsyncValue.guard(() => _dataFetcher!.fetchData());
   }
 
   @override
@@ -119,11 +124,9 @@ mixin PaginatedDataMixin<T> on AutoDisposeAsyncNotifier<List<T>>
   ///```
   /// You may override this in your notifiers
   Future<void> setQueryFilter(String query) async {
-    if (queryFilter != query) {
-      queryFilter = query;
-      state = const AsyncLoading();
-      ref.invalidateSelf();
-      await future;
-    }
+    queryFilter = query;
+    state = const AsyncLoading();
+    ref.invalidateSelf();
+    await future;
   }
 }

@@ -1,5 +1,4 @@
-import 'package:example/src/constants/colors.dart';
-import 'package:example/src/constants/text_styles.dart';
+import 'package:example/src/extensions/context_utils.dart';
 import 'package:example/src/features/movies/models/tmdb_movie/tmdb_movie.dart';
 import 'package:example/src/features/movies/providers/search_movies_provider.dart';
 import 'package:example/src/features/movies/views/widgets/movie_grid_item.dart';
@@ -23,8 +22,8 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
   @override
   Widget build(BuildContext context) {
     final movies = ref.watch(searchMoviesProvider);
+    final notifier = ref.read(searchMoviesProvider.notifier);
     return Scaffold(
-      backgroundColor: primaryColor,
       body: SafeArea(
         child: SkeletonizerConfig(
           data: const SkeletonizerConfigData(
@@ -36,7 +35,6 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
               controller: controller,
               slivers: [
                 const SliverAppBar(
-                  backgroundColor: primaryColor,
                   title: MovieSearchField(),
                   floating: true,
                 ),
@@ -62,7 +60,7 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
                               overview: 'Long text summary',
                             ),
                           ),
-                          numSkeletons: 8,
+                          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                         )
                       : PaginatedListView(
                           state: movies,
@@ -91,14 +89,36 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
                                   Text(
                                     'Loading page ${pagination.currentPage + 1}'
                                     ' of ${pagination.lastPage}',
-                                    style: summaryTextStyle,
+                                    style: context.summaryTextStyle,
                                   ),
                                 ],
                               ),
                             );
                           },
+                          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                         ),
                 ),
+                if (movies.hasError && !movies.isLoading && notifier.hasData())
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: Column(
+                        children: [
+                          const Text('Sorry, unable to load the data'),
+                          IconButton.outlined(
+                            onPressed: () {
+                              ref
+                                  .read(searchMoviesProvider.notifier)
+                                  .getNextPage();
+                            },
+                            icon: const Icon(Icons.refresh_outlined),
+                          ),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

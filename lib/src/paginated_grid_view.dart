@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_infinite_scroll_pagination/riverpod_infinite_scroll_pagination.dart';
-import 'package:riverpod_infinite_scroll_pagination/src/extensions/widget.dart';
 import 'package:riverpod_infinite_scroll_pagination/src/mixins/paginated_grid_mixin.dart';
+import 'package:riverpod_infinite_scroll_pagination/src/types/types.dart';
 
 class PaginatedGridView<T> extends StatefulWidget {
   /// [GridView] or [SliverGrid] widget with automated pagination
@@ -40,7 +40,7 @@ class PaginatedGridView<T> extends StatefulWidget {
     this.emptyListBuilder,
     this.gridListBuilder,
     this.skeleton,
-    this.numSkeletons = 4,
+    this.numSkeletons = 8,
     this.scrollDirection = Axis.vertical,
     this.pullToRefresh = true,
     this.shrinkWrap = false,
@@ -65,7 +65,7 @@ class PaginatedGridView<T> extends StatefulWidget {
 
   ///Optional builder to use when the data is empty even after querying
   ///If omitted, a default error widget will be shown.
-  final Widget Function(BuildContext context)? emptyListBuilder;
+  final EmptyListBuilder? emptyListBuilder;
 
   ///Required item builder similar to the `itemBuilder` in ListViews.
   ///The builder wil receive one data at a time
@@ -74,11 +74,7 @@ class PaginatedGridView<T> extends StatefulWidget {
   ///Optional error builder.
   ///The builder will receive the error object and stack trace.
   ///If omitted a generic error widget with a retry button will be used
-  final Widget Function(
-    BuildContext context,
-    Object error,
-    StackTrace stackTrace,
-  )? errorBuilder;
+  final ErrorBuilder? errorBuilder;
 
   ///Optional loading state builder. This widget will show inside the ListView.
   ///The builder will also receive the `Pagination` object and can be used to
@@ -103,13 +99,12 @@ class PaginatedGridView<T> extends StatefulWidget {
   ///   );
   /// },
   /// ```
-  final Widget Function(BuildContext context, Pagination pagination)?
-      loadingBuilder;
+  final LoadingBuilder? loadingBuilder;
 
   ///The initial loading builder when there is no data. Defaults to an adaptive
   ///progress indicator. Also, you can use a skeleton loading animation using
   ///the `skeleton` field.
-  final Widget Function(BuildContext context)? initialLoadingBuilder;
+  final InitialLoadingBuilder? initialLoadingBuilder;
 
   ///Low level grid view builder. Don't need to use in normal cases.
   ///Only useful, if you want to completely build the list yourself(May be
@@ -176,10 +171,15 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
     return widget.state.when(
       data: _listBuilder,
       error: (error, stackTrace) {
+        final config = InfiniteScrollPaginationConfig.of(context);
         if (widget.notifier.hasData()) {
           return _listBuilder(widget.notifier.getCurrentData());
         }
-        return widget.errorBuilder?.call(context, error, stackTrace) ??
+        if (widget.errorBuilder != null) {
+          widget.errorBuilder?.call(context, error, stackTrace);
+        }
+        return config?.initialLoadingErrorBuilder
+                ?.call(context, error, stackTrace) ??
             genericError;
       },
       loading: () {
@@ -192,7 +192,7 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
         if (widget.skeleton != null) {
           return buildShimmer();
         }
-        return loadingBuilder;
+        return initialLoadingBuilder;
       },
     );
   }
@@ -202,42 +202,41 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
       return widget.gridListBuilder!.call(context, data);
     }
 
+    if (data.isEmpty) {
+      final config = InfiniteScrollPaginationConfig.of(context);
+      if (widget.emptyListBuilder != null) {
+        return widget.emptyListBuilder!.call(context);
+      }
+      final noItemsWidget =
+          config?.emptyListBuilder?.call(context) ?? noItemsFound;
+      return maybeWrapWithSliverToBoxAdapter(noItemsWidget);
+    }
+
     return widget.useSliver ? _sliverGridList(data) : _gridList(data);
   }
 
   Widget _gridList(List<T> data) {
     Widget? listView;
-    if (data.isEmpty) {
-      return widget.emptyListBuilder?.call(context) ?? noItemsFound;
-    }
     listView = GridView.builder(
       scrollDirection: widget.scrollDirection,
       controller: scrollController,
       shrinkWrap: widget.shrinkWrap,
       gridDelegate: widget.gridDelegate,
-      itemCount: shouldRequireStatusRow ? data.length + 1 : data.length,
+      itemCount: shouldRequireStatusRow ? data.length + 6 : data.length,
       itemBuilder: (BuildContext context, int index) =>
           itemBuilder(context, data, index),
       reverse: widget.reverse,
     );
 
-    return withRefreshIndicator(listView);
+    return maybeWithRefreshIndicator(listView);
   }
 
   Widget _sliverGridList(List<T> data) {
-    Widget? listView;
-
-    if (data.isEmpty) {
-      return widget.emptyListBuilder?.call(context) ??
-          noItemsFound.sliverToBoxAdapter;
-    }
-
-    listView = SliverGrid.builder(
+    return SliverGrid.builder(
       gridDelegate: widget.gridDelegate,
-      itemCount: shouldRequireStatusRow ? data.length + 1 : data.length,
+      itemCount: shouldRequireStatusRow ? data.length + 2 : data.length,
       itemBuilder: (BuildContext context, int index) =>
           itemBuilder(context, data, index),
     );
-    return withRefreshIndicator(listView);
   }
 }

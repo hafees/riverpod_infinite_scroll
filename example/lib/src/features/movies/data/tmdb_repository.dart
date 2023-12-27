@@ -12,6 +12,7 @@ class TmdbRepository {
     int page = 1,
     String? query,
   }) async {
+    await Future<void>.delayed(const Duration(seconds: 2));
     final results = await dio.get<Map<String, dynamic>>(
       'trending/movie/day?language=en-US&page=$page${query != null ? '&$query' : ''}',
     );

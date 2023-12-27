@@ -86,4 +86,11 @@ extension WidgetUtils on Widget {
       child: this,
     );
   }
+
+  Widget get sliverFillRemaining {
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: this,
+    );
+  }
 }

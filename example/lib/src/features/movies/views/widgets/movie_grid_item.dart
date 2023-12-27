@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:example/src/constants/colors.dart';
-import 'package:example/src/constants/text_styles.dart';
+import 'package:example/src/extensions/context_utils.dart';
 import 'package:example/src/features/movies/models/tmdb_movie/tmdb_movie.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +11,6 @@ class MovieGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: primaryColor,
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(10),
@@ -39,13 +37,13 @@ class MovieGridItem extends StatelessWidget {
             Text(
               movie.originalTitle ?? '',
               maxLines: 1,
-              style: headingTextStyle,
+              style: context.headingTextStyle,
             ),
             Text(
               maxLines: 2,
               movie.overview ?? '',
               overflow: TextOverflow.ellipsis,
-              style: summaryTextStyle,
+              style: context.summaryTextStyle,
             ),
             const SizedBox(
               height: 10,
@@ -65,13 +63,13 @@ class MovieGridItem extends StatelessWidget {
                     ),
                     Text(
                       '${(movie.voteAverage ?? 0 * 10).floor()}%',
-                      style: infoTextStyle,
+                      style: context.infoTextStyle,
                     ),
                   ],
                 ),
                 Text(
                   '${movie.voteCount} Votes',
-                  style: infoTextStyle,
+                  style: context.infoTextStyle,
                 ),
               ],
             ),

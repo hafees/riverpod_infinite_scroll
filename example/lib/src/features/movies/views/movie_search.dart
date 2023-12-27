@@ -1,4 +1,3 @@
-import 'package:example/src/constants/colors.dart';
 import 'package:example/src/features/movies/providers/search_movies_provider.dart';
 import 'package:example/src/features/movies/views/widgets/movie_grid_item.dart';
 import 'package:example/src/features/movies/views/widgets/movie_item.dart';
@@ -21,10 +20,8 @@ class _MovieSearchListState extends ConsumerState<MovieSearchList> {
     final movies = ref.watch(searchMoviesProvider);
 
     return Scaffold(
-      backgroundColor: primaryColor,
       appBar: AppBar(
         title: const MovieSearchField(),
-        backgroundColor: primaryColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
