@@ -18,7 +18,8 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
   List<Widget> get skeletons =>
       List.generate(widget.numSkeletons, (_) => widget.skeleton!);
 
-  bool get shouldRequireStatusRow => widget.state.isLoading;
+  bool get shouldRequireStatusRow =>
+      widget.state.isLoading || widget.state.hasError;
 
   Widget get statusRow {
     final config = InfiniteScrollPaginationConfig.of(context);
@@ -116,6 +117,7 @@ mixin PaginatedGridMixin<T> on State<PaginatedGridView<T>> {
   ) {
     if (widget.state.isLoading &&
         widget.skeleton != null &&
+        widget.useSkeletonLoadingAlways &&
         index >= data.length) {
       return Skeletonizer(
         child: widget.skeleton!,

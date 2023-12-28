@@ -16,6 +16,7 @@ class App extends StatelessWidget {
           Center(child: Text('$e - ISPC')),
       errorBuilder: (_, e, __) =>
           const Center(child: Text('Loading Error - ISPC')),
+      numSkeletonsForLoading: 2,
       child: MaterialApp(
         title: 'TMDB Demo App',
         theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),

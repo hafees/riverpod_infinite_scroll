@@ -33,6 +33,7 @@ class InfiniteScrollPaginationConfig extends InheritedWidget {
     this.emptyListBuilder,
     this.pullToRefresh = true,
     this.numSkeletons = 8,
+    this.numSkeletonsForLoading,
     this.scrollDelta = 200,
     super.key,
   });
@@ -88,6 +89,12 @@ class InfiniteScrollPaginationConfig extends InheritedWidget {
   ///How many skeletons to show int the initial loading. Ignored if skeleton is
   ///not provide.
   final int numSkeletons;
+
+  ///Number of skeletons to show when loading next set of data. Ignored if
+  ///`useSkeletonLoadingAlways` is false.
+  ///
+  ///Defaults to `numSkeletons`.
+  final int? numSkeletonsForLoading;
 
   /// When to trigger the next page request. By default, next page request is
   /// triggered when there is only <=200 pixels to reach the end of scroll.

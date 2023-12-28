@@ -41,6 +41,8 @@ class PaginatedGridView<T> extends StatefulWidget {
     this.gridListBuilder,
     this.skeleton,
     this.numSkeletons = 8,
+    this.useSkeletonLoadingAlways = false,
+    this.numSkeletonsForLoading,
     this.scrollDirection = Axis.vertical,
     this.pullToRefresh = true,
     this.shrinkWrap = false,
@@ -125,6 +127,18 @@ class PaginatedGridView<T> extends StatefulWidget {
   ///How many skeletons to show int the initial loading. Ignored if skeleton is
   ///not provide.
   final int numSkeletons;
+
+  /// If enabled, skeleton loading animation will be shown instead of the
+  /// [CircularProgressIndicator] animation.
+  ///  Otherwise, skeleton loading animation will be used only in initial
+  /// loading. Ignored if `skeleton` is not provided.
+  final bool useSkeletonLoadingAlways;
+
+  ///Number of skeletons to show when loading next set of data. Ignored if
+  ///`useSkeletonLoadingAlways` is false.
+  ///
+  ///Defaults to `numSkeletons`.
+  final int? numSkeletonsForLoading;
 
   /// The scroll direction. Defaults to [Axis.vertical]
   final Axis scrollDirection;
@@ -215,6 +229,21 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
     return widget.useSliver ? _sliverGridList(data) : _gridList(data);
   }
 
+  int get extraCount {
+    if (widget.state.isLoading) {
+      final numSkeletons =
+          InfiniteScrollPaginationConfig.of(context)?.numSkeletonsForLoading ??
+              widget.numSkeletons;
+      return widget.useSkeletonLoadingAlways && widget.skeleton != null
+          ? widget.numSkeletonsForLoading ?? numSkeletons
+          : 1;
+    }
+    if (widget.state.hasError) {
+      return 1;
+    }
+    return 0;
+  }
+
   Widget _gridList(List<T> data) {
     Widget? listView;
     listView = GridView.builder(
@@ -222,7 +251,7 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
       controller: scrollController,
       shrinkWrap: widget.shrinkWrap,
       gridDelegate: widget.gridDelegate,
-      itemCount: shouldRequireStatusRow ? data.length + 6 : data.length,
+      itemCount: data.length + extraCount,
       itemBuilder: (BuildContext context, int index) =>
           itemBuilder(context, data, index),
       reverse: widget.reverse,
@@ -234,7 +263,7 @@ class _PaginatedGridViewState<T> extends State<PaginatedGridView<T>>
   Widget _sliverGridList(List<T> data) {
     return SliverGrid.builder(
       gridDelegate: widget.gridDelegate,
-      itemCount: shouldRequireStatusRow ? data.length + 2 : data.length,
+      itemCount: data.length + extraCount,
       itemBuilder: (BuildContext context, int index) =>
           itemBuilder(context, data, index),
     );

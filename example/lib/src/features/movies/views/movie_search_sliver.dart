@@ -60,6 +60,7 @@ class _MovieSearchListState extends ConsumerState<MovieSearchSliverList> {
                               overview: 'Long text summary',
                             ),
                           ),
+                          useSkeletonLoadingAlways: true,
                           errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                         )
                       : PaginatedListView(
